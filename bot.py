@@ -8,12 +8,19 @@ import traceback
 # Load environment variables
 load_dotenv()
 
-if not os.getenv("OPENAI_API_KEY"):
+# Ensure API key is available
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
     raise EnvironmentError("OPENAI_API_KEY is not set in the environment.")
 
-client = OpenAI()  # Automatically uses OPENAI_API_KEY from environment
+# Remove proxy settings if they exist (to prevent TypeError in OpenAI client)
+os.environ.pop("HTTP_PROXY", None)
+os.environ.pop("HTTPS_PROXY", None)
 
-print("OPENAI_API_KEY loaded:", bool(os.getenv("OPENAI_API_KEY")))  # Debug print
+# Initialize OpenAI client
+client = OpenAI(api_key=api_key)
+
+print("OPENAI_API_KEY loaded:", bool(api_key))  # Debug print
 
 def record_user_details(email, name="Not provided", notes="Not provided"):
     os.makedirs("logs", exist_ok=True)
