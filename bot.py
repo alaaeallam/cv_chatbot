@@ -1,5 +1,5 @@
-import openai
 import os
+from openai import OpenAI
 from PyPDF2 import PdfReader
 from langdetect import detect
 from dotenv import load_dotenv
@@ -8,10 +8,10 @@ import traceback
 # Load environment variables
 load_dotenv()
 
-# Use env var or fallback key (⚠️ don't use this in public repos)
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Initialize OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-print("OPENAI_API_KEY loaded:", bool(openai.api_key))  # Debug print
+print("OPENAI_API_KEY loaded:", bool(os.getenv("OPENAI_API_KEY")))  # Debug print
 
 # Logging functions
 def record_user_details(email, name="Not provided", notes="Not provided"):
@@ -26,10 +26,11 @@ def record_unknown_question(question):
 
 class Me:
     def __init__(self):
+        self.client = client
         self.name = "Alaa Allam"
         self.user_email = None
 
-        # Load CV
+        # Load LinkedIn resume
         try:
             reader = PdfReader("me/linkedin.pdf")
             self.linkedin = "".join([p.extract_text() for p in reader.pages if p.extract_text()])
@@ -70,7 +71,7 @@ Always ask for the user's email if it's not provided yet.
         messages.append({"role": "user", "content": message})
 
         try:
-            response = openai.chat.completions.create(
+            response = self.client.chat.completions.create(
                 model="gpt-4",
                 messages=messages,
                 temperature=0.7
