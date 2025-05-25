@@ -3,6 +3,6 @@ openai==1.23.6
 langdetect==1.0.9
 python-dotenv==1.0.1
 PyPDF2==3.0.1
-# fastapi removed unless you explicitly need it
-# Remove this unless you’re using FastAPI: fastapi==0.110.0
-# pydantic removed to allow gradio to install compatible version
+# If you use FastAPI, pin to compatible versions:
+fastapi==0.95.2
+pydantic==1.10.13
