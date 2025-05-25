@@ -1,19 +1,19 @@
-from openai import OpenAI
 import os
+import traceback
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
 from langdetect import detect
-import traceback
+from openai import OpenAI
 
-# Load .env file
+# Load environment variables
 load_dotenv()
 
-# Check API key
+# Ensure API key is present
 if not os.getenv("OPENAI_API_KEY"):
     raise EnvironmentError("OPENAI_API_KEY is not set in the environment.")
 
-# Correct usage: No proxies, just env var
-client = OpenAI()
+# Initialize OpenAI client with the latest API
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Logging functions
 def record_user_details(email, name="Not provided", notes="Not provided"):
@@ -32,7 +32,7 @@ class Me:
         self.name = "Alaa Allam"
         self.user_email = None
 
-        # Load LinkedIn resume
+        # Load CV
         try:
             reader = PdfReader("me/linkedin.pdf")
             self.linkedin = "".join([p.extract_text() for p in reader.pages if p.extract_text()])
