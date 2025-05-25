@@ -1,21 +1,20 @@
+from openai import OpenAI
 import os
-import traceback
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
 from langdetect import detect
-from openai import OpenAI
+import traceback
 
 # Load environment variables
 load_dotenv()
 
-# Ensure API key is present
 if not os.getenv("OPENAI_API_KEY"):
     raise EnvironmentError("OPENAI_API_KEY is not set in the environment.")
 
-# Initialize OpenAI client with the latest API
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI()  # Automatically uses OPENAI_API_KEY from environment
 
-# Logging functions
+print("OPENAI_API_KEY loaded:", bool(os.getenv("OPENAI_API_KEY")))  # Debug print
+
 def record_user_details(email, name="Not provided", notes="Not provided"):
     os.makedirs("logs", exist_ok=True)
     with open("logs/emails.txt", "a", encoding="utf-8") as f:
@@ -32,7 +31,6 @@ class Me:
         self.name = "Alaa Allam"
         self.user_email = None
 
-        # Load CV
         try:
             reader = PdfReader("me/linkedin.pdf")
             self.linkedin = "".join([p.extract_text() for p in reader.pages if p.extract_text()])
@@ -40,7 +38,6 @@ class Me:
             print(f"[ERROR] Reading CV: {e}")
             self.linkedin = "[LinkedIn resume could not be loaded]"
 
-        # Load Summary
         try:
             with open("me/summary.txt", "r", encoding="utf-8") as f:
                 self.summary = f.read()
