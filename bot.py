@@ -1,15 +1,19 @@
-import os
 from openai import OpenAI
+import os
+from dotenv import load_dotenv
 from PyPDF2 import PdfReader
 from langdetect import detect
-from dotenv import load_dotenv
 import traceback
 
-# Load environment variables
+# Load .env file
 load_dotenv()
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Ensure API key is available
+if not os.getenv("OPENAI_API_KEY"):
+    raise EnvironmentError("OPENAI_API_KEY is not set in the environment.")
+
+# Initialize OpenAI client (uses env var)
+client = OpenAI()
 
 print("OPENAI_API_KEY loaded:", bool(os.getenv("OPENAI_API_KEY")))  # Debug print
 
