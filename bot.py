@@ -70,7 +70,7 @@ Always ask for the user's email if it's not provided yet.
         messages.append({"role": "user", "content": message})
 
         try:
-            response = openai.ChatCompletion.create(
+            response = openai.chat.completions.create(
                 model="gpt-4",
                 messages=messages,
                 temperature=0.7
