@@ -8,14 +8,12 @@ import traceback
 # Load .env file
 load_dotenv()
 
-# Ensure API key is available
+# Check API key
 if not os.getenv("OPENAI_API_KEY"):
     raise EnvironmentError("OPENAI_API_KEY is not set in the environment.")
 
-# Initialize OpenAI client (uses env var)
+# Correct usage: No proxies, just env var
 client = OpenAI()
-
-print("OPENAI_API_KEY loaded:", bool(os.getenv("OPENAI_API_KEY")))  # Debug print
 
 # Logging functions
 def record_user_details(email, name="Not provided", notes="Not provided"):
