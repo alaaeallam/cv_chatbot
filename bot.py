@@ -8,17 +8,12 @@ import traceback
 # Load environment variables
 load_dotenv()
 
-# Ensure API key is available
 api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
     raise EnvironmentError("OPENAI_API_KEY is not set in the environment.")
 
-# Remove proxy settings if they exist (to prevent TypeError in OpenAI client)
-os.environ.pop("HTTP_PROXY", None)
-os.environ.pop("HTTPS_PROXY", None)
-
-# Initialize OpenAI client
-client = OpenAI(api_key=api_key)
+# ✅ Correct way in SDK >=1.0
+client = OpenAI()
 
 print("OPENAI_API_KEY loaded:", bool(api_key))  # Debug print
 
