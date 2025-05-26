@@ -103,3 +103,4 @@ Always ask for the user's email if it's not provided yet.
 
         history.append([message, reply])
         return history
+    
